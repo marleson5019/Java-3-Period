@@ -42,7 +42,7 @@ public class ImpostoRenda {
         }
 
         imposto = (valSalBruto * aliquota) - parcelaDeduzir;
-        valDesconto = Math.max(imposto, 0);
+        valDesconto = imposto;
         valSalLiquido = valSalBruto - valDesconto;
     }
 }
