@@ -1,60 +1,57 @@
 package com.mycompany.construtor;
 
 public class ContaBancaria {
-    private String numero;
-    private String agencia;
+    private int numero;
+    private int agencia;
     private String cliente;
     private double saldo;
     private double chequeEspecial;
 
     public ContaBancaria() {
-        this.numero = "";
-        this.agencia = "";
+        this.numero = 0;
+        this.agencia = 0;
         this.cliente = "";
         this.saldo = 0.0;
         this.chequeEspecial = 0.0;
     }
 
     public void leDados() {
-        numero = InOut.leString("Digite o número da conta:");
-        agencia = InOut.leString("Digite a agência:");
-        cliente = InOut.leString("Digite o nome do cliente:");
-        saldo = InOut.leDouble("Digite o saldo inicial:");
-        chequeEspecial = InOut.leDouble("Digite o valor do cheque especial:");
+        this.numero = InOut.leInt("Informe o número da conta:");
+        this.agencia = InOut.leInt("Informe a agência:");
+        this.cliente = InOut.leString("Informe o nome do cliente:");
+        this.saldo = InOut.leDouble("Informe o saldo:");
+        this.chequeEspecial = InOut.leDouble("Informe o cheque especial:");
     }
 
     public void sacar(double retirada) {
-        if (retirada <= saldo + chequeEspecial) {
-            saldo -= retirada;
-            InOut.MsgDeInforma("Operação de Saque", 
-                "Saque de R$ " + retirada + " realizado com sucesso.\nSaldo atual: R$ " + saldo);
+        double totalDisponivel = saldo + chequeEspecial;
+        if (retirada <= totalDisponivel) {
+            if (retirada <= saldo) {
+                saldo -= retirada;
+            } else {
+                retirada -= saldo;
+                saldo = 0;
+                chequeEspecial -= retirada;
+            }
         } else {
-            InOut.MsgDeErro("Erro de Saque", 
-                "Saldo insuficiente! Tentativa de saque: R$ " + retirada);
+            InOut.MsgDeErro("Erro", "Saldo insuficiente!");
         }
     }
 
     public void depositar(double deposito) {
         saldo += deposito;
-        InOut.MsgDeInforma("Depósito", 
-            "Depósito de R$ " + deposito + " realizado.\nSaldo atual: R$ " + saldo);
     }
 
     public double verificarSaldo() {
         return saldo + chequeEspecial;
     }
 
-    @Override
-    public String toString() {
-        return "Número: " + numero +
-               "\nAgência: " + agencia +
-               "\nCliente: " + cliente +
-               "\nSaldo: " + saldo +
-               "\nCheque Especial: " + chequeEspecial +
-               "\nSaldo disponível: " + verificarSaldo();
-    }
-
-    public void msgDeInforma() {
-        InOut.MsgDeInforma("Dados da Conta", this.toString());
+    public void MsgdeInforma() {
+        String msg = "Conta: " + numero +
+                     "\nAgência: " + agencia +
+                     "\nCliente: " + cliente +
+                     "\nSaldo: " + saldo +
+                     "\nCheque Especial: " + chequeEspecial;
+        InOut.MsgDeInforma("Dados da Conta", msg);
     }
 }
